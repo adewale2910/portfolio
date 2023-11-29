@@ -34,12 +34,18 @@
     }
 
     #href{
+      
         position: absolute;
-        top: 55%;
-        display: flex;
+        margin-top: 60px;
+        top: 60%;
     }
     #fullname, #email, #org, #message{
         width: 93%;
         padding: 1%;
+    }
+    .last{
+        margin-top: -60px;
+        margin-left: 45px;
+        width: 460px;
     }
 }

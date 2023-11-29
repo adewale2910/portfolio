@@ -19,12 +19,12 @@ export const ProjectList = [
         gitlink: "https://piggyvest2.vercel.app/",
         content: "Mobile wallets are apps for storing financial information and other documents such as credit cards, bank information, and even driver's licenses..",
     },
-    // {
-    //     image: "/image/bankapp.png",
-    //     title: "Bank App",
-    //     gitlink: "https://dashing-hamster-952c9f.netlify.app/",
-    //     content: "The benefits of mobile banking for users include time efficiency, the possibility to manage funds, transfer money, and detect frauds quickly. Also with the help of digital banking users have 24/7 access to their accounts",
-    // },
+    {
+        image: "/public/image/e-com.png",
+        title: "E-Commerce",
+        gitlink: "jazzy-granita-4e986d.netlify.app",
+        content: "An ecommerce website is your digital storefront on the internet. It facilitates the transaction between a buyer and seller. It is the virtual space where you showcase products, and online customers make selections. Your website acts as the product shelves, sales staff, and cash register of your online business channel.",
+    },
     // {
     //     image: "/image/step.svg",
     //     title: "Multi-Step",

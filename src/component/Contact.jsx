@@ -53,7 +53,7 @@ const Contact = () => {
     <div data-aos="flip-up" id="contact">
       <div id="href">
         <a href="https://github.com/adewale2910">
-          <AiFillGithub className=" ms-10 text-white me-19" size={36} />
+          <AiFillGithub className=" ms-10 text-white me-19" size={40} />
         </a>
         <a href="https://www.linkedin.com/in/adeloye-olusegun-adewale-30845b24b">
           <BsLinkedin className="mt-5 ms-10 text-white me-19" size={36} />
@@ -182,7 +182,7 @@ const Contact = () => {
         </div>
 
         <div>
-          <img src={team} alt="" width={900} />
+          <img className="last" src={team} alt="" width={900} />
         </div>
       </div>
     </div>
