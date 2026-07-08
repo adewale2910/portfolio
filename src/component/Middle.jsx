@@ -29,7 +29,7 @@ const Middle = () => {
                                 "React JS",
                                 500,
                                 "HTML",
-                                500,
+                                500,    
                             ]}
                             style={{ fontSize: "1em" }}
                             repeat={Infinity}

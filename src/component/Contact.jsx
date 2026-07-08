@@ -1,17 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import team from "../assets/image/team.png";
 import { AiFillGithub } from "react-icons/ai";
 import { BsLinkedin } from "react-icons/bs";
 import { RiTwitterXLine } from "react-icons/ri";
-import axios from "axios";
 import Aos from "aos";
+import "aos/dist/aos.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Contact = () => {
+  const [userMessage, setUserMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     Aos.init({
-      duration: 3000,
+      duration: 1500,
+      once: true,
     });
   }, []);
 
@@ -23,169 +27,216 @@ const Contact = () => {
       message: "",
     },
 
-    onSubmit: (values, { resetForm }) => {
-      axios
-        .post(endpoint, values)
-        .then((response) => {
-          console.log(response.data.message);
-          setUserMessage(response.data.message);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      resetForm({ values: "" });
-    },
-
     validationSchema: Yup.object({
-      fullName: Yup.string().required("This field is required"),
+      fullName: Yup.string().required("Full name is required"),
 
       email: Yup.string()
-        .required("This field is required")
-        .email("You must enter an email address"),
+        .email("Enter a valid email")
+        .required("Email is required"),
 
-      organization: Yup.string().required("This field is required"),
+      organization: Yup.string().required("Organization is required"),
 
-      message: Yup.string().required("This field is required"),
+      message: Yup.string().required("Message is required"),
     }),
+
+    onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
+      setUserMessage("");
+
+      const formData = new FormData();
+
+      formData.append(
+        "access_key",
+        "cdf6a07f-75df-4771-9507-f10ccb146bb1"
+      );
+
+      formData.append("name", values.fullName);
+      formData.append("email", values.email);
+      formData.append("organization", values.organization);
+      formData.append("message", values.message);
+
+      try {
+        const response = await fetch(
+          "https://api.web3forms.com/submit",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+          setUserMessage("✅ Message sent successfully!");
+          resetForm();
+        } else {
+          setUserMessage("❌ Failed to send message.");
+        }
+      } catch (error) {
+        console.log(error);
+        setUserMessage("❌ Something went wrong.");
+      }
+
+      setLoading(false);
+    },
   });
 
   return (
-    <div data-aos="flip-up" id="contact">
-      <div id="href">
-        <a href="https://github.com/adewale2910">
-          <AiFillGithub className=" ms-10 text-white me-19" size={40} />
-        </a>
-        <a href="https://www.linkedin.com/in/adeloye-olusegun-adewale-30845b24b">
-          <BsLinkedin className="mt-5 ms-10 text-white me-19" size={36} />
-        </a>
-        <a href="http://twitter.com/Adewale2910">
-          <RiTwitterXLine className="ms-10 text-white mt-10" size={36} />
-        </a>
-      </div>
+    <section
+      id="contact"
+      data-aos="fade-up"
+      className="py-20"
+    >
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-center">
 
-      <div className="grid lg:grid-cols-2">
-        <div className="lg:mt-36 mt-10 lg:ms-28 ms-8">
-          <div className="text-white">CONTACT ME</div>
-          <form action="" onSubmit={formik.handleSubmit}>
-            <div className="my-2 w-80 w-full rounded">
-              <label className="text-white" htmlFor="">
-                Fullname
-              </label>{" "}
-              <br />
-              <input
-                type="text"
-                id="fullname"
-                placeholder="Enter Your Fullname"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={
-                  formik.touched.fullName && formik.errors.fullName
-                    ? "form-control is-invalid"
-                    : "form-control"
-                }
-                value={formik.values.fullName}
-                name="fullName"
-              />
-              <p>
-                <small className="text-red-600 font-bold">
-                  {formik.touched.fullName && formik.errors.fullName}
-                </small>
-              </p>
-            </div>
-
-            <div className="my-2 w-80 w-full rounded">
-              <label className="text-white" htmlFor="">
-                Email
-              </label>{" "}
-              <br />
-              <input
-                type="text"
-                id="email"
-                placeholder="Enter Your Email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={
-                  formik.touched.email && formik.errors.email
-                    ? "form-control is-invalid"
-                    : "form-control"
-                }
-                value={formik.values.email}
-                name="email"
-              />
-              <p>
-                <small className="text-red-600 font-bold">
-                  {formik.touched.email && formik.errors.email}
-                </small>
-              </p>
-            </div>
-
-            <div className="my-2 w-80 w-full rounded">
-              <label className="text-white" htmlFor="">
-                Organization
-              </label>{" "}
-              <br />
-              <input
-                type="text"
-                id="org"
-                placeholder="Enter Your Organization"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={
-                  formik.touched.organization && formik.errors.organization
-                    ? "form-control is-invalid"
-                    : "form-control"
-                }
-                value={formik.values.organization}
-                name="organization"
-              />
-              <p>
-                <small className="text-red-600 font-bold">
-                  {formik.touched.organization && formik.errors.organization}
-                </small>
-              </p>
-            </div>
-
-            <div className="my-2 w-80 w-full rounded">
-              <label className="text-white" htmlFor="">
-                Message
-              </label>{" "}
-              <br />
-              <textarea
-                id="message"
-                placeholder="Enter Your Message"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                className={
-                  formik.touched.message && formik.errors.message
-                    ? "form-control is-invalid"
-                    : "form-control"
-                }
-                value={formik.values.message}
-                name="message"
-                cols="30"
-                rows="5"
-              ></textarea>
-              <p>
-                <small className="text-red-600 font-bold">
-                  {formik.touched.message && formik.errors.message}
-                </small>
-              </p>
-            </div>
-            <button
-              type="submit"
-              className="text-white w-80 rounded font-bold bg-red-500 p-2"
-            >
-              Send Message
-            </button>
-            <div className="text-white font-bold lg:mt-5 mt-1"></div>
-          </form>
-        </div>
+        {/* Contact Form */}
 
         <div>
-          <img className="last" src={team} alt="" width={900} />
+          <h2 className="text-4xl font-bold text-white mb-8">
+            Contact Me
+          </h2>
+
+          <form onSubmit={formik.handleSubmit} className="space-y-5">
+
+            <div>
+              <input
+                type="text"
+                name="fullName"
+                placeholder="Full Name"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.fullName}
+                className="w-full p-4 rounded-lg bg-gray-800 text-white outline-none"
+              />
+
+              {formik.touched.fullName && formik.errors.fullName && (
+                <p className="text-red-400 text-sm mt-1">
+                  {formik.errors.fullName}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                className="w-full p-4 rounded-lg bg-gray-800 text-white outline-none"
+              />
+
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-400 text-sm mt-1">
+                  {formik.errors.email}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <input
+                type="text"
+                name="organization"
+                placeholder="Organization"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.organization}
+                className="w-full p-4 rounded-lg bg-gray-800 text-white outline-none"
+              />
+
+              {formik.touched.organization &&
+                formik.errors.organization && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {formik.errors.organization}
+                  </p>
+                )}
+            </div>
+
+            <div>
+              <textarea
+                rows="6"
+                name="message"
+                placeholder="Write your message..."
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.message}
+                className="w-full p-4 rounded-lg bg-gray-800 text-white outline-none"
+              />
+
+              {formik.touched.message &&
+                formik.errors.message && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {formik.errors.message}
+                  </p>
+                )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 transition text-white px-8 py-3 rounded-lg"
+            >
+              {loading ? "Sending..." : "Send Message"}
+            </button>
+
+            {userMessage && (
+              <p className="text-green-400 mt-4">{userMessage}</p>
+            )}
+          </form>
+
+          {/* Social Icons */}
+
+          <div className="flex gap-6 mt-10">
+
+            <a
+              href="https://github.com/adewale2910"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <AiFillGithub
+                size={38}
+                className="text-white hover:text-blue-500"
+              />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/adeloye-olusegun-adewale-30845b24b"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <BsLinkedin
+                size={34}
+                className="text-white hover:text-blue-500"
+              />
+            </a>
+
+            <a
+              href="https://twitter.com/Adewale2910"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <RiTwitterXLine
+                size={34}
+                className="text-white hover:text-blue-500"
+              />
+            </a>
+
+          </div>
         </div>
+
+        {/* Image */}
+
+        <div>
+          <img
+            src={team}
+            alt="Contact"
+            className="w-full"
+          />
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 };
 

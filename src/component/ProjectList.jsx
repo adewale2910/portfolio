@@ -25,12 +25,7 @@ export const ProjectList = [
         gitlink: "jazzy-granita-4e986d.netlify.app",
         content: "An ecommerce website is your digital storefront on the internet. It facilitates the transaction between a buyer and seller. It is the virtual space where you showcase products, and online customers make selections. Your website acts as the product shelves, sales staff, and cash register of your online business channel.",
     },
-    // {
-    //     image: "/image/step.svg",
-    //     title: "Multi-Step",
-    //     gitlink: "https://captainoig-multistep-form.netlify.app",
-    //     content: "TA multi-step form is exactly what it sounds like — a long-form broken down into multiple pieces/steps to make an otherwise long form less intimidating for visitors to complete. The additional fields only appear after a visitor has filled in their baseline information, like name and email address",
-    // },
+   
     {
         image: "/image/product1.jpg",
         title: "React E-Commerce",
